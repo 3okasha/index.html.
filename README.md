@@ -44,7 +44,11 @@
 html{scroll-behavior:smooth;}
 
 body{
-  background:var(--bg);
+  background-color:var(--bg);
+  background-image:linear-gradient(color-mix(in srgb,var(--bg) 76%,transparent),color-mix(in srgb,var(--bg) 76%,transparent)),url('file_000000007dd0824384e2713f6d50466b.png');
+  background-position:center;
+  background-size:cover;
+  background-attachment:fixed;
   color:var(--text);
   font-family:'IBM Plex Sans Arabic',sans-serif;
   line-height:1.7;
@@ -374,8 +378,88 @@ footer b{
   }
 }
 
+/* Subtle entrance motion keeps the original layout intact. */
+header{
+  animation:slide-down .65s ease both;
+}
+
+header > *{
+  animation:fade-up .6s ease both;
+}
+
+header nav > *{animation:fade-up .55s ease both;}
+header nav > *:nth-child(2){animation-delay:.08s;}
+header nav > *:nth-child(3){animation-delay:.16s;}
+header nav > *:nth-child(4){animation-delay:.24s;}
+header nav > *:nth-child(5){animation-delay:.32s;}
+
+.hero > *{
+  animation:fade-up .75s cubic-bezier(.2,.7,.25,1) both;
+}
+.hero > *:nth-child(2){animation-delay:.1s;}
+.hero > *:nth-child(3){animation-delay:.2s;}
+.hero > *:nth-child(4){animation-delay:.3s;}
+.hero > *:nth-child(5){animation-delay:.4s;}
+
+.services > *{
+  animation:fade-up .7s ease both;
+}
+.services > *:nth-child(2){animation-delay:.1s;}
+.services > *:nth-child(3){animation-delay:.18s;}
+.service-card{
+  animation:fade-up .7s ease both;
+}
+.service-card:nth-child(2){animation-delay:.12s;}
+.service-card:nth-child(3){animation-delay:.24s;}
+
+.credit-band > *{
+  animation:fade-up .7s ease both;
+}
+.contact > *{
+  animation:fade-up .7s ease both;
+}
+.contact-links > *{animation:fade-up .65s ease both;}
+.contact-links > *:nth-child(2){animation-delay:.12s;}
+footer{animation:fade-up .7s ease both;}
+
+.service-card,
+.contact-card,
+.cta,
+.wa-btn,
+.fb-btn,
+.theme-toggle{
+  transition:transform .22s ease, box-shadow .22s ease, background .22s ease, border-color .22s ease;
+}
+.service-card:hover,
+.contact-card:hover{
+  transform:translateY(-5px);
+  box-shadow:0 12px 28px rgba(0,0,0,.14);
+}
+.cta:hover,
+.wa-btn:hover,
+.fb-btn:hover,
+.theme-toggle:hover{
+  transform:translateY(-2px);
+}
+
+@keyframes fade-up{
+  from{opacity:0;transform:translateY(18px);}
+  to{opacity:1;transform:translateY(0);}
+}
+
+@keyframes slide-down{
+  from{opacity:0;transform:translateY(-14px);}
+  to{opacity:1;transform:translateY(0);}
+}
+
 @media(prefers-reduced-motion:reduce){
   html{scroll-behavior:auto;}
+
+  *,*::before,*::after{
+    animation-duration:.01ms!important;
+    animation-iteration-count:1!important;
+    transition-duration:.01ms!important;
+  }
 
   .typewriter::after{animation:none;}
 }
