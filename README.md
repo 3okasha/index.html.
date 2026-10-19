@@ -12,6 +12,7 @@
 
 <style>
 :root{
+  color-scheme:dark;
   --bg:#0A0A0A;
   --surface:#161618;
   --border:#2C2C2F;
@@ -24,6 +25,18 @@
   --whatsapp-hover:#1ebe5d;
   --facebook:#1877F2;
   --facebook-hover:#0d65d9;
+}
+
+:root[data-theme="light"]{
+  color-scheme:light;
+  --bg:#F7F7F5;
+  --surface:#FFFFFF;
+  --border:#E1E1DE;
+  --text:#202020;
+  --muted:#66666B;
+  --silver:#55565A;
+  --red:#C91F17;
+  --red-hover:#aa1913;
 }
 
 *{margin:0;padding:0;box-sizing:border-box;}
@@ -60,7 +73,7 @@ header{
   justify-content:space-between;
   align-items:center;
   padding:14px 6%;
-  background:rgba(10,10,10,.85);
+  background:var(--bg);
   backdrop-filter:blur(10px);
   border-bottom:1px solid var(--border);
 }
@@ -86,6 +99,24 @@ nav a.navlink{
 }
 
 nav a.navlink:hover{color:var(--text);}
+
+.theme-toggle{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:40px;
+  height:40px;
+  border:1px solid var(--border);
+  border-radius:6px;
+  background:var(--surface);
+  color:var(--text);
+  font:inherit;
+  font-size:1.15rem;
+  cursor:pointer;
+  transition:background .2s ease,border-color .2s ease;
+}
+
+.theme-toggle:hover{border-color:var(--red);}
 
 .wa-btn,
 .fb-btn{
@@ -360,6 +391,8 @@ footer b{
     <a class="navlink" href="#services">خدماتنا</a>
     <a class="navlink" href="#contact">تواصل</a>
 
+    <button class="theme-toggle" id="theme-toggle" type="button" aria-label="تفعيل الوضع الفاتح" aria-pressed="false" title="تفعيل الوضع الفاتح">☀</button>
+
     <a class="wa-btn" href="https://wa.me/201203480661">
       تواصل واتساب
     </a>
@@ -496,6 +529,36 @@ footer b{
 
 <script>
 (function(){
+  var themeButton = document.getElementById('theme-toggle');
+  var savedTheme = null;
+
+  try {
+    savedTheme = localStorage.getItem('magic-tall-theme');
+  } catch (error) {
+    // Keep the default dark theme when browser storage is unavailable.
+  }
+
+  function setTheme(theme){
+    var isLight = theme === 'light';
+    document.documentElement.dataset.theme = isLight ? 'light' : 'dark';
+    themeButton.textContent = isLight ? '☾' : '☀';
+    themeButton.setAttribute('aria-pressed', String(isLight));
+    themeButton.setAttribute('aria-label', isLight ? 'تفعيل الوضع الداكن' : 'تفعيل الوضع الفاتح');
+    themeButton.title = isLight ? 'تفعيل الوضع الداكن' : 'تفعيل الوضع الفاتح';
+  }
+
+  setTheme(savedTheme === 'light' ? 'light' : 'dark');
+
+  themeButton.addEventListener('click', function(){
+    var nextTheme = document.documentElement.dataset.theme === 'light' ? 'dark' : 'light';
+    setTheme(nextTheme);
+    try {
+      localStorage.setItem('magic-tall-theme', nextTheme);
+    } catch (error) {
+      // The theme still changes for the current page when storage is unavailable.
+    }
+  });
+
   var el = document.getElementById('typewriter');
   var text = 'جودة. أناقة. حضور عالي';
   var prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
